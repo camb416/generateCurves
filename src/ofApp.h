@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "ofxCurve.h"
 
 class ofApp : public ofBaseApp{
 
@@ -27,5 +28,8 @@ class ofApp : public ofBaseApp{
     ofxIntSlider numRows;
     
     vector<ofVec3f*> pts;
+    vector<ofxCurve*> curves;
+    
+    
     
 };

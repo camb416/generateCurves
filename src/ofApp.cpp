@@ -8,6 +8,7 @@ void ofApp::setup(){
     
     
     
+    
 }
 
 //--------------------------------------------------------------
@@ -37,6 +38,12 @@ void ofApp::draw(){
                 ofDrawBitmapString(ofToString(counter),j*30, i*30);
                 pts.push_back(new ofVec3f(j*30,i*30));
 
+                if(i>0){
+                    ofxCurve * c;
+                    c = new ofxCurve(*pts[pts.size()-2], *pts[pts.size()-2], *pts[pts.size()-1]+ofVec3f(ofRandom(5.0f),ofRandom(5.0f),ofRandom(5.0f)), *pts[pts.size()-1]);
+                    curves.push_back(c);
+                }
+                
                 counter++;
             }
         } else {
@@ -125,12 +132,25 @@ void ofApp::draw(){
     
     
     
-    ofBeginShape();
+    //ofBeginShape();
     ofNoFill();
-    for(int i=0;i<pts.size();i++){
-        ofVertex(pts.at(i)->x,pts.at(i)->y);
+    for(int i=0;i<pts.size()-1;i++){
+        if(i%numCols==0){
+            ofSetColor(255,255,0);
+        } else {
+            ofSetColor(0,255,0);
+        }
+        ofDrawLine(*pts.at(i), *pts.at(i+1));
+        //ofVertex(pts.at(i)->x,pts.at(i)->y);
     }
-    ofEndShape(false);
+    
+    for(int i=0;i<curves.size();i++){
+        curves.at(i)->update();
+        curves.at(i)->draw();
+    }
+    
+    curves.clear();
+    //ofEndShape(false);
     pts.clear();
     ofPopMatrix();
     gui.draw();
