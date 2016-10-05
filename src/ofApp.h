@@ -4,12 +4,17 @@
 #include "ofxGui.h"
 #include "ofxCurve.h"
 
-class ofApp : public ofBaseApp{
+#include "ofxMidi.h"
+
+
+class ofApp : public ofBaseApp, public ofxMidiListener{
 
 	public:
 		void setup();
 		void update();
 		void draw();
+    
+    void exit();
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -27,13 +32,33 @@ class ofApp : public ofBaseApp{
     ofxIntSlider numCols;
     ofxIntSlider numRows;
     ofxFloatSlider scale;
+    ofxFloatSlider depth;
     ofxFloatSlider tipScale;
     ofxFloatSlider edgeScale;
+    ofxFloatSlider rotX;
+    ofxFloatSlider rotY;
+    ofxFloatSlider rotZ;
+    ofxFloatSlider tranX;
+    ofxFloatSlider tranY;
+    ofxFloatSlider tranZ;
+    ofxToggle bDrawControls;
+    
+    ofxButton regenBtn;
+    
     
     vector<ofVec3f*> pts;
     vector<ofxCurve*> curves;
     
     void generateCurve();
+    
+    
+    // midi stuff
+    void newMidiMessage(ofxMidiMessage& eventArgs);
+    
+    stringstream text;
+    
+    ofxMidiIn midiIn;
+    ofxMidiMessage midiMessage;
     
     
     

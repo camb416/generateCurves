@@ -2,7 +2,15 @@
 	<cols>3</cols>
 	<rows>3</rows>
 <my_panel/>
-<scale>100</scale>
-	<tip_scale>1.956</tip_scale>
-	<edge_scale>0.854</edge_scale>
+<scale>110.472</scale>
+	<tip_scale>1.74409</tip_scale>
+	<edge_scale>0.944882</edge_scale>
+<x_rot>68.4</x_rot>
+	<y_rot>0</y_rot>
+	<z_rot>311.811</z_rot>
+	<x_tran>355</x_tran>
+	<y_tran>362.205</y_tran>
+	<z_tran>150</z_tran>
+<depth>36.2205</depth>
+<draw_control_pts>1</draw_control_pts>
 </my_panel>
