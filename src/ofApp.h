@@ -26,9 +26,14 @@ class ofApp : public ofBaseApp{
     ofxPanel gui;
     ofxIntSlider numCols;
     ofxIntSlider numRows;
+    ofxFloatSlider scale;
+    ofxFloatSlider tipScale;
+    ofxFloatSlider edgeScale;
     
     vector<ofVec3f*> pts;
     vector<ofxCurve*> curves;
+    
+    void generateCurve();
     
     
     

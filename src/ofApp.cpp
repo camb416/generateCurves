@@ -1,15 +1,28 @@
 #include "ofApp.h"
 
-int scale = 100;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
     gui.setup("my panel");
     gui.add(numCols.setup("cols",3,1,12));
     gui.add(numRows.setup("rows",3,1,12));
+    gui.add(scale.setup("scale",100,10,300));
+    gui.add(tipScale.setup("tip scale",1.0f,0.1f,3.0f));
+    gui.add(edgeScale.setup("edge scale",1.0f,0.1f,3.0f));
+    
     
     gui.loadFromFile("settings.xml");
     
+    
+    generateCurve();
+    
+    
+}
+
+void ofApp::generateCurve(){
+    
+    pts.clear();
+    curves.clear();
     
     bool f = true;
     int startNum = 0;
@@ -28,11 +41,11 @@ void ofApp::setup(){
                 ofDrawBitmapString(ofToString(counter),j*scale, i*scale);
                 pts.push_back(new ofVec3f(j*scale,i*scale));
                 
-//                if(i>0){
-//                    ofxCurve * c;
-//                    c = new ofxCurve(*pts[pts.size()-2], *pts[pts.size()-2], *pts[pts.size()-1]+ofVec3f(ofRandom(5.0f),ofRandom(5.0f),ofRandom(5.0f)), *pts[pts.size()-1]);
-//                    curves.push_back(c);
-//                }
+                //                if(i>0){
+                //                    ofxCurve * c;
+                //                    c = new ofxCurve(*pts[pts.size()-2], *pts[pts.size()-2], *pts[pts.size()-1]+ofVec3f(ofRandom(5.0f),ofRandom(5.0f),ofRandom(5.0f)), *pts[pts.size()-1]);
+                //                    curves.push_back(c);
+                //                }
                 
                 counter++;
             }
@@ -121,8 +134,8 @@ void ofApp::setup(){
     
     
     ofxCurve * c;
-    c = new ofxCurve(*pts[0], *pts[0]+ofVec3f(0,-scale,0), *pts[0]+ofVec3f(-scale,0,0), *pts[0]);
-    curves.push_back(c);
+    c = new ofxCurve(*pts[0], *pts[0]+ofVec3f(0,-scale*tipScale,0), *pts[0]+ofVec3f(-scale*tipScale,0,0), *pts[0]);
+   curves.push_back(c);
     
     for(int i=0;i<pts.size();i++){
         ofxCurve * c;
@@ -130,19 +143,22 @@ void ofApp::setup(){
         ofVec3f v2 = v;
         if(i>0){
             if((i)%numCols==0){
-                if(pts[i-2]->x > pts[i-1]->x){
-                    v = v2 = ofVec3f(-scale/2,0,0);
-                } else if(pts[i-2]->x < pts[i-1]->x){
-                    v = v2 = ofVec3f(scale/2,0,0);
-                } else if(pts[i-2]->y > pts[i-1]->y){
-                    v = v2 = ofVec3f(0,-scale/2,0);
-                } else if(pts[i-2]->y < pts[i-1]->y){
-                    v = v2 = ofVec3f(0,scale/2,0);
-                } else if(pts[i-2] == pts[i-1]){ // this never executes... problem! (because we're evaluating the previous ones, not the current.
-                    v = ofVec3f(scale/2,0,0);
-                    v2 = ofVec3f(0,scale/2,0);
-                }
                 
+                
+                if(pts[i]->x == pts[i-1]->x &&
+                   pts[i]->y == pts[i-1]->y){ // this never executes... problem! (because we're evaluating the previous ones, not the current.
+                    v = ofVec3f(scale*tipScale,0,0);
+                    v2 = ofVec3f(0,scale*tipScale,0);
+                    ofLog() << "blargh";
+                } else if(pts[i-2]->x > pts[i-1]->x){
+                    v = v2 = ofVec3f(-scale*edgeScale,0,0);
+                } else if(pts[i-2]->x < pts[i-1]->x){
+                    v = v2 = ofVec3f(scale*edgeScale,0,0);
+                } else if(pts[i-2]->y > pts[i-1]->y){
+                    v = v2 = ofVec3f(0,-scale*edgeScale,0);
+                } else if(pts[i-2]->y < pts[i-1]->y){
+                    v = v2 = ofVec3f(0,scale*edgeScale,0);
+                }
                 
                 
                 ofLog() << i << ", " << v.x << ", "<< v.y<< ", " << v2.x<< ", " << v2.y;
@@ -150,18 +166,15 @@ void ofApp::setup(){
                 curves.push_back(c);
                 
             } else{
-            c = new ofxCurve(*pts[i-1], *pts[i-1], *pts[i], *pts[i]);
-            curves.push_back(c);
+                c = new ofxCurve(*pts[i-1], *pts[i-1], *pts[i], *pts[i]);
+                curves.push_back(c);
             }
         }
     }
-    c = new ofxCurve(*pts[pts.size()-1], *pts[pts.size()-1]+ofVec3f(0,-scale,0), *pts[pts.size()-1]+ofVec3f(-scale,0,0), *pts[pts.size()-1]);
-    curves.push_back(c);
-    
 
     
-    
 }
+
 
 //--------------------------------------------------------------
 void ofApp::update(){
@@ -205,7 +218,7 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    generateCurve();
 }
 
 //--------------------------------------------------------------
