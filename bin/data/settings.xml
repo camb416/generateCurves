@@ -1,16 +1,17 @@
 <my_panel>
-	<cols>3</cols>
-	<rows>3</rows>
+	<cols>11</cols>
+	<rows>11</rows>
 <my_panel/>
-<scale>110.472</scale>
+<scale>39.685</scale>
 	<tip_scale>1.74409</tip_scale>
 	<edge_scale>0.944882</edge_scale>
-<x_rot>68.4</x_rot>
+<x_rot>53.8583</x_rot>
 	<y_rot>0</y_rot>
-	<z_rot>311.811</z_rot>
+	<z_rot>11.3386</z_rot>
 	<x_tran>355</x_tran>
-	<y_tran>362.205</y_tran>
-	<z_tran>150</z_tran>
-<depth>36.2205</depth>
-<draw_control_pts>1</draw_control_pts>
+	<y_tran>204.724</y_tran>
+	<z_tran>0</z_tran>
+<depth>14.9606</depth>
+<draw_control_pts>0</draw_control_pts>
+<draw_intersections>0</draw_intersections>
 </my_panel>

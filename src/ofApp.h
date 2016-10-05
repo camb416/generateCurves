@@ -42,6 +42,7 @@ class ofApp : public ofBaseApp, public ofxMidiListener{
     ofxFloatSlider tranY;
     ofxFloatSlider tranZ;
     ofxToggle bDrawControls;
+    ofxToggle bDrawBigDots;
     
     ofxButton regenBtn;
     

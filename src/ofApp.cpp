@@ -40,6 +40,7 @@ void ofApp::setup(){
     gui.add(tranZ.setup("z tran", 150.0f,0.0f,1000.0f));
     gui.add(regenBtn.setup("regen curve"));
     gui.add(bDrawControls.setup("draw control pts",true));
+    gui.add(bDrawBigDots.setup("draw intersections", true));
     regenBtn.addListener(this, &ofApp::generateCurve);
     
     
@@ -217,6 +218,9 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    
+    ofBackground(0);
+    ofSetColor(255);
     ofPushMatrix();
     ofTranslate(tranX,tranY,tranZ);
 
@@ -224,30 +228,17 @@ void ofApp::draw(){
     ofRotateY(rotY);
     ofRotateZ(rotZ);
     
-    //ofBeginShape();
     ofNoFill();
     for(int i=0;i<pts.size()-1;i++){
-        if(i%numCols==0){
-            ofSetColor(255,255,0);
-        } else {
-            ofSetColor(0,255,0);
-        }
-       // ofDrawLine(*pts.at(i), *pts.at(i+1));
-        //ofVertex(pts.at(i)->x,pts.at(i)->y);
         ofFill();
-        ofSetColor(0);
-        ofDrawEllipse(*pts.at(i), 15, 15);
+        if(bDrawBigDots) ofDrawEllipse(*pts.at(i), 15, 15);
     }
     ofNoFill();
     for(int i=0;i<curves.size();i++){
-        ofSetColor(0);
         curves.at(i)->update();
         curves.at(i)->draw(bDrawControls);
     }
     
-    //curves.clear();
-    //ofEndShape(false);
-    //pts.clear();
     ofPopMatrix();
     gui.draw();
 }
@@ -305,6 +296,9 @@ void ofApp::newMidiMessage(ofxMidiMessage& msg) {
             break;
         case 66:
             bDrawControls = !bDrawControls;
+            break;
+        case 67:
+            bDrawBigDots = !bDrawBigDots;
             break;
     }
     
