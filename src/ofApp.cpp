@@ -26,9 +26,9 @@ void ofApp::setup(){
     
     
     gui.setup("my panel");
-    gui.add(numCols.setup("cols",3,1,12));
-    gui.add(numRows.setup("rows",3,1,12));
-    gui.add(scale.setup("scale",100,10,300));
+    gui.add(numCols.setup("cols",11,11,127));
+    gui.add(numRows.setup("rows",11,11,127));
+    gui.add(scale.setup("scale",100,1,300));
     gui.add(tipScale.setup("tip scale",1.0f,0.1f,3.0f));
     gui.add(edgeScale.setup("edge scale",1.0f,0.1f,3.0f));
     gui.add(depth.setup("depth",0.0f,10.0f,100.0f));
@@ -36,8 +36,8 @@ void ofApp::setup(){
     gui.add(rotY.setup("y rot", 0.0f,0.0f,360));
     gui.add(rotZ.setup("z rot", 0.0f,0.0f,360));
     gui.add(tranX.setup("x tran", 150.0f,0.0f,1000.0f));
-    gui.add(tranY.setup("y tran", 150.0f,0.0f,1000.0f));
-    gui.add(tranZ.setup("z tran", 150.0f,0.0f,1000.0f));
+    gui.add(tranY.setup("y tran", 0.0f,-500.0f,500.0f));
+    gui.add(tranZ.setup("z tran", 0.0f,-1000.0f,1000.0f));
     gui.add(regenBtn.setup("regen curve"));
     gui.add(bDrawControls.setup("draw control pts",true));
     gui.add(bDrawBigDots.setup("draw intersections", true));
@@ -49,13 +49,15 @@ void ofApp::setup(){
     gui.loadFromFile("settings.xml");
     
     
+    bPauseDraw = true;
+    
     generateCurve();
     
     
 }
 
 void ofApp::generateCurve(){
-    
+    bPauseDraw = true;
     pts.clear();
     curves.clear();
     
@@ -206,7 +208,7 @@ void ofApp::generateCurve(){
             }
         }
     }
-
+    bPauseDraw = false;
     
 }
 
@@ -218,28 +220,30 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    
-    ofBackground(0);
-    ofSetColor(255);
-    ofPushMatrix();
-    ofTranslate(tranX,tranY,tranZ);
+    if(!bPauseDraw){
+        
+        ofBackground(0);
+        ofSetColor(255);
+        ofPushMatrix();
+        ofTranslate(tranX,tranY,tranZ);
 
-    ofRotateX(rotX);
-    ofRotateY(rotY);
-    ofRotateZ(rotZ);
-    
-    ofNoFill();
-    for(int i=0;i<pts.size()-1;i++){
-        ofFill();
-        if(bDrawBigDots) ofDrawEllipse(*pts.at(i), 15, 15);
+        ofRotateX(rotX);
+        ofRotateY(rotY);
+        ofRotateZ(rotZ);
+        
+        ofNoFill();
+        for(int i=0;i<pts.size()-1;i++){
+            ofFill();
+            if(bDrawBigDots) ofDrawEllipse(*pts.at(i), 15, 15);
+        }
+        ofNoFill();
+        for(int i=0;i<curves.size();i++){
+            curves.at(i)->update();
+            curves.at(i)->draw(bDrawControls);
+        }
+        
+        ofPopMatrix();
     }
-    ofNoFill();
-    for(int i=0;i<curves.size();i++){
-        curves.at(i)->update();
-        curves.at(i)->draw(bDrawControls);
-    }
-    
-    ofPopMatrix();
     gui.draw();
 }
 

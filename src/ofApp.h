@@ -61,6 +61,8 @@ class ofApp : public ofBaseApp, public ofxMidiListener{
     ofxMidiIn midiIn;
     ofxMidiMessage midiMessage;
     
+    bool bPauseDraw;
+    
     
     
 };
